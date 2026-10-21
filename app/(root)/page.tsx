@@ -4,7 +4,6 @@ import EventCard from "@/components/EventCard";
 import { events } from "@/lib/constant";
 
 export default function Home() {
-
   return (
          <section>
           <h1 className="text-center capitalize">the Hub for every dev <br /> Event You can't Miss</h1>

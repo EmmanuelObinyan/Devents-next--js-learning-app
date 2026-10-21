@@ -1,0 +1,22 @@
+
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+language: "en-US"
+
+reviews:
+  profile: "chill"
+  request_changes_workflow: false
+  high_level_summary: true
+  review_status: true
+  auto_review:
+    enabled: true
+    drafts: false
+
+chat:
+  auto_reply: true
+
+
+# This enables automatic reviews for eligible, 
+# non-draft pull requests and asks CodeRabbit to provide a high-level summary.
+#  The chill profile aims for more focused reviews
+

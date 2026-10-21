@@ -43,6 +43,9 @@ BookingSchema.pre("save", async function () {
   if (!eventExists) {
     throw new Error("Cannot book: the specified event does not exist.");
   }
+   if (!mongoose.isValidObjectId(this.eventId)) {
+  throw new Error("Invalid event ID");
+}
 });
 
 // Prevent the same email from booking the same event twice.
@@ -56,6 +59,8 @@ BookingSchema.index({ email: 1 });
 
 // index on an eventId for faster queries
 BookingSchema.index({eventId:1})
+// descending order to get data
+BookingSchema.index({eventId:1,createdAt:-1})
 
 const Booking: Model<IBooking> =
   (models.Booking as Model<IBooking>) ||

@@ -40,6 +40,7 @@ export interface IEvent{
         ,description:{
             type:String,
             trim:true,
+            // validators
             required:[true,'overview is required'],
             maxlength:[1000,'description cannot exceed 1000 characters']
         },
@@ -115,7 +116,7 @@ export interface IEvent{
                 message : 'at least one tag is required'
             }
          }
-     },
+   },
      {
         timestamps: true ,  
      }
