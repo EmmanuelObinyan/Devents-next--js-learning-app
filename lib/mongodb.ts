@@ -31,6 +31,10 @@ async function dbConnect(): Promise<typeof mongoose> {
 
   // Reuse an in-progress connection instead of creating another one.
   if (!cached.promise) {
+    
+if (!MONGODB_URI) {
+  throw new Error("Please define MONGODB_URI in .env.local");
+}
     const options = {
       bufferCommands: false,
     };
