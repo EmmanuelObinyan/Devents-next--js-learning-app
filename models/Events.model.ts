@@ -29,7 +29,7 @@ export interface IEvent{
             type:String,
             trim:true,
             required:[true,'title is required'],
-            minlength:[10,'title cannot be lower be 10 characters'],
+            minlength:[10,'title cannot be shorter than 10 characters'],
             maxlength:[100, 'title cannot exceed 100 characters']
         },
         slug:{
