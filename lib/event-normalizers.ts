@@ -22,48 +22,42 @@ export function normalizeEventDate(input: string): string {
 
   return value;
 }
-/**
- * Converts a time into: 4:45 pm
- *
- * Accepted formats:
- * 4:45 pm
- * 4:45 PM
- * 16:45
- * 09:05
- */
+
 export function normalizeEventTime(input: string): string {
   const value = input.trim().toLowerCase();
 
-  // Format: 24-hour time, e.g. 16:45
+  // Already in 24-hour format
   const twentyFourHourMatch = value.match(
     /^([01]?\d|2[0-3]):([0-5]\d)$/
   );
 
   if (twentyFourHourMatch) {
-    let hours = Number(twentyFourHourMatch[1]);
+    const hours = Number(twentyFourHourMatch[1]);
     const minutes = Number(twentyFourHourMatch[2]);
 
-    const period = hours >= 12 ? "pm" : "am";
-
-    hours = hours % 12 || 12;
-
-    return `${hours}:${String(minutes).padStart(2, "0")} ${period}`;
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
   }
 
-  // Format: 12-hour time, e.g. 4:45 pm
+  // Convert 12-hour format to 24-hour format
   const twelveHourMatch = value.match(
     /^(1[0-2]|0?[1-9]):([0-5]\d)\s*(am|pm)$/
   );
 
   if (twelveHourMatch) {
-    const hours = Number(twelveHourMatch[1]);
+    let hours = Number(twelveHourMatch[1]);
     const minutes = Number(twelveHourMatch[2]);
     const period = twelveHourMatch[3];
 
-    return `${hours}:${String(minutes).padStart(2, "0")} ${period}`;
+    if (period === "am" && hours === 12) {
+      hours = 0;
+    } else if (period === "pm" && hours !== 12) {
+      hours += 12;
+    }
+
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
   }
 
   throw new Error(
-    "Invalid time. Use a time such as 4:45 pm or 16:45."
+    "Invalid time. Use HH:mm or a time such as 4:45 pm."
   );
 }

@@ -7,7 +7,7 @@ export interface IEvent{
   slug:string;
   description:string;
   overview:string;
-  image:String;
+  image:string;
   venue:string;
   location:string;
   date:string;
@@ -27,8 +27,9 @@ export interface IEvent{
      {
         title:{
             type:String,
-            required:[true,'title is required'],
             trim:true,
+            required:[true,'title is required'],
+            minlength:[10,'title cannot be shorter than 10 characters'],
             maxlength:[100, 'title cannot exceed 100 characters']
         },
         slug:{
@@ -45,7 +46,7 @@ export interface IEvent{
             maxlength:[1000,'description cannot exceed 1000 characters']
         },
         overview:{
-            trype:String,
+            type:String,
             trim:true,
             required:[true,'overview is required'],
             maxlength:[500,'overview cannot exceed 500 characters']
@@ -77,7 +78,7 @@ export interface IEvent{
          time:{
             type:String,
             required:[true,'time is required'],
-            match: [
+                  match: [
         /^([01]\d|2[0-3]):[0-5]\d$/,
         "Time must use 24-hour HH:mm format",
       ],
@@ -87,7 +88,7 @@ export interface IEvent{
             required:[true,'mode is required'],
             enum:{
                 values:['online','offline','hybrid'],
-                message:'mode must be either online, offline or hybrid'
+                message:'mode must be either online, offline or hybrid',
             }
          },
          audience:{
@@ -124,13 +125,18 @@ export interface IEvent{
 
    // Generate the slug before saving a new or modified title.
 EventSchema.pre("validate", function () {
-    if (this.date) {
+  if (this.time) {
+    console.log("Before normalization:", this.time);
+
+    this.time = normalizeEventTime(this.time);
+
+    console.log("After normalization:", this.time);
+  }
+
+  if (this.date) {
     this.date = normalizeEventDate(this.date);
   }
 
-  if (this.time) {
-    this.time = normalizeEventTime(this.time);
-  }
   if (this.isModified("title") && this.title) {
     this.slug = slugify(this.title, {
       lower: true,
@@ -139,7 +145,6 @@ EventSchema.pre("validate", function () {
     });
   }
 });
-
    const Event: Model<IEvent>= (models.Event as Model<IEvent>) || mongoose.model<IEvent>('Event',EventSchema)
 
    export default Event;
