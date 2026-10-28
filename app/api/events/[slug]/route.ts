@@ -41,11 +41,11 @@ export async function GET(req:NextRequest,{params}:RouteParams){
     //   handle specific error types
     if(e instanceof Error){
         // handle database connection problem
-        if(e.message.includes('MONGODB_URL')){
+        if(e.message.includes('MONGODB_URI')){
             return NextResponse.json({  message:"Database configuration error"},{status:500})
     }
 
-    return NextResponse.json({  message:"failed to fetch events", error:e.message},{status:500})
+    return NextResponse.json({  message:"failed to fetch events"},{status:500})
 }
     
 //  handle unknown errors
