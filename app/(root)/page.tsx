@@ -1,5 +1,6 @@
 import React from "react";
 import ExploreBtn from "@/components/ExploreBtn";
+import {cacheLife} from 'next/cache'
 import EventCard from "@/components/EventCard";
 import {Suspense} from 'react'
 import {IEvent} from '@/models/Events.model'
@@ -7,7 +8,8 @@ import {IEvent} from '@/models/Events.model'
 
 const base_url=process.env.NEXT_PUBLIC_BASE_URL
 async function Eventlist(){
-    
+        "use cache"
+        cacheLife('hours')
     const response = await fetch(`${base_url}/api/events`);
     const { events } = await response.json()
   return (

@@ -159,7 +159,7 @@ const EventListDetails = async ({ params }: PageProps) => {
             ) : (
               <p className="text-sm">be the first to book your spot</p>
             )}
-            <BookEvent />
+            <BookEvent eventId={data._id}/>
           </aside>
         </div>
       </div>
